@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+option {
+  color: black;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .chakra-input,
+  .chakra-button {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* Ensure proper touch targets on mobile */
+@media (max-width: 480px) {
+  .chakra-button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  .chakra-input {
+    min-height: 44px !important;
+  }
+}
+
+/* Improve table responsiveness */
+@media (max-width: 768px) {
+  .chakra-table {
+    font-size: 14px;
+  }
+  
+  .chakra-table th,
+  .chakra-table td {
+    padding: 8px 4px;
+  }
+}
