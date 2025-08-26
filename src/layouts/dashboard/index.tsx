@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, useDisclosure } from '@chakra-ui/react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from '../../components/sidebar/DashboardSidebar';
 import Topbar from '../../components/navbar/DashboardTopbar';
@@ -10,6 +10,36 @@ import AllContracts from '../../views/dashboard/AllContracts';
 export default function DashboardLayout() {
   const { isLoggedIn } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+
+  // Prevent back navigation
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
+      // Keep user on dashboard
+      navigate('/dashboard/create-contract', { replace: true });
+    };
+
+    // Prevent back button
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+
+    // Disable browser back button
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function() {
+      window.history.pushState(null, '', window.location.href);
+    };
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate]);
 
   // Redirect to login if not authenticated
   if (!isLoggedIn) {

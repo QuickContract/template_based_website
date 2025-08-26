@@ -31,7 +31,14 @@ import { useAuth } from "contexts/AuthContext";
 function SignIn() {
   const navigate = useNavigate();
   const toast = useToast();
-  const { login } = useAuth();
+  const { login, isLoggedIn } = useAuth();
+  
+  // Redirect if already logged in
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
   
   // Chakra color mode
   const textColor = useColorModeValue("navy.700", "white");

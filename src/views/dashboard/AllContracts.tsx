@@ -28,7 +28,7 @@ import {
 import { asIcon } from '../../utils/iconUtils';
 import { MdEdit, MdDelete, MdDownload, MdVisibility } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { generatePDF } from '../../utils/pdfGenerator';
+import { generatePDF, downloadPDF, openPDFInNewTab } from '../../utils/pdfGenerator';
 import { generateDOCX, downloadDOCX } from '../../utils/docxGenerator';
 import { getTemplateById as getContractTemplate } from '../../config/contractTemplates';
 
@@ -106,6 +106,7 @@ export default function AllContracts() {
   };
 
   const handleDownloadPDF = async (contract: Contract) => {
+    console.log('======contract======',contract);
     const template = getContractTemplate(contract.subcategory);
     if (!template) {
       toast({
@@ -120,12 +121,14 @@ export default function AllContracts() {
 
     setDownloadingPDF(contract.id);
     try {
-      await generatePDF({
+      // Use the new function to open PDF in new tab
+
+       openPDFInNewTab({
         subcategoryId: contract.subcategory,
         formData: contract.data,
         template: template.content
       });
-      
+      console.log('======pdf  opened in new tab======');
       toast({
         title: 'Success',
         description: 'PDF opened in new tab',
@@ -134,7 +137,7 @@ export default function AllContracts() {
         isClosable: true,
       });
     } catch (error) {
-      console.error('PDF generation error:', error);
+      console.log('======PDF generation error======', error);
       toast({
         title: 'Error',
         description: 'Failed to generate PDF',

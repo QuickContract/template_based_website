@@ -20,7 +20,7 @@ import {
 import { asIcon } from '../../utils/iconUtils';
 import { MdDownload, MdClose } from 'react-icons/md';
 import { getTemplateById, injectTemplateData } from '../../config/contractTemplates';
-import { generatePDF } from '../../utils/pdfGenerator';
+import { generatePDF, downloadPDF } from '../../utils/pdfGenerator';
 import { generateDOCX, downloadDOCX } from '../../utils/docxGenerator';
 
 interface ContractPreviewProps {

@@ -47,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoggedIn(false);
     setUser(null);
     localStorage.removeItem('quickContractAuth');
+    // Note: Navigation will be handled in the component that calls logout
   };
 
   const value = {

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import {} from 'react-router-dom';
 import AuthLayout from './layouts/auth';
 import DashboardLayout from './layouts/dashboard';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import {
   ChakraProvider,
   ColorModeScript,
@@ -26,7 +27,9 @@ export default function Main() {
             <Route
               path="dashboard/*"
               element={
-                <DashboardLayout />
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
               }
             />
 

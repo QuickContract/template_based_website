@@ -116,7 +116,10 @@ export const contractTemplates: ContractTemplate[] = [
 ];
 
 export const getTemplateById = (id: string) => {
-  return contractTemplates.find(template => template.id === id);
+  console.log('======template id======',id);
+  const template = contractTemplates.find(template => template.id === id);
+  return template;
+  // return contractTemplates.find(template => template.id === 'builder-agreement-hindi');
 };
 
 export const injectTemplateData = (template: ContractTemplate, data: Record<string, any>): string => {
