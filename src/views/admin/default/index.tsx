@@ -1,43 +1,32 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
 
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2022 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
+import React from 'react';
 // Chakra imports
-import { Avatar, Box, Flex, FormLabel, Icon, Select, SimpleGrid, useColorModeValue, Text } from '@chakra-ui/react';
-// Assets
-import Usa from 'assets/img/dashboards/usa.png';
+import {
+	Box,
+	SimpleGrid,
+	Text,
+	useColorModeValue,
+	Flex,
+	Icon,
+	FormLabel,
+	Select,
+	Avatar,
+} from '@chakra-ui/react';
 // Custom components
-import MiniCalendar from 'components/calendar/MiniCalendar';
 import MiniStatistics from 'components/card/MiniStatistics';
 import IconBox from 'components/icons/IconBox';
-import { MdAddTask, MdAttachMoney, MdBarChart, MdFileCopy } from 'react-icons/md';
 import { asIcon } from 'utils/iconUtils';
-
-import ComplexTable from 'views/admin/default/components/ComplexTable';
-import DailyTraffic from 'views/admin/default/components/DailyTraffic';
-import PieCard from 'views/admin/default/components/PieCard';
-import Tasks from 'views/admin/default/components/Tasks';
+import { MdBarChart, MdAttachMoney, MdAddTask, MdFileCopy } from 'react-icons/md';
+import Usa from 'assets/img/dashboards/usa.png';
 import TotalSpent from 'views/admin/default/components/TotalSpent';
 import WeeklyRevenue from 'views/admin/default/components/WeeklyRevenue';
+import DailyTraffic from 'views/admin/default/components/DailyTraffic';
+import PieCard from 'views/admin/default/components/PieCard';
+import ComplexTable from 'views/admin/default/components/ComplexTable';
+import Tasks from 'views/admin/default/components/Tasks';
+import MiniCalendar from 'components/calendar/MiniCalendar';
 import tableDataComplex from 'views/admin/default/variables/tableDataComplex';
+import QuickContractLogo from 'components/icons/QuickContractLogo';
 
 export default function QuickContractDashboard() {
 	// Chakra Color Mode
@@ -46,9 +35,12 @@ export default function QuickContractDashboard() {
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	return (
 		<Box pt={{ base: '100px', sm: '110px', md: '80px', xl: '80px' }} px={{ base: '20px', sm: '25px', md: '30px' }}>
-			<Text color={textColor} fontSize={{ base: '18px', sm: '20px', md: '22px' }} fontWeight='700' lineHeight='100%' mb={{ base: '15px', md: '20px' }}>
-				Quick Contract Dashboard
-			</Text>
+			<Flex mb={{ base: '15px', md: '20px' }}>
+				<QuickContractLogo variant='large' />
+				<Text color={textColor} fontSize={{ base: '18px', sm: '20px', md: '22px' }} fontWeight='700' lineHeight='100%' ml='15px' alignSelf='center'>
+					Dashboard
+				</Text>
+			</Flex>
 			<SimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 3, '2xl': 6 }} gap={{ base: '15px', md: '20px' }} mb={{ base: '15px', md: '20px' }}>
 				<MiniStatistics
 					startContent={

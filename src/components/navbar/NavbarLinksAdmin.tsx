@@ -12,7 +12,6 @@ import {
 	MenuList,
 	Text,
 	useColorModeValue,
-	useColorMode
 } from '@chakra-ui/react';
 // Custom Components
 import { ItemContent } from 'components/menu/ItemContent';
@@ -23,14 +22,14 @@ import React from 'react';
 // Assets
 import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
-import { IoMdMoon, IoMdSunny } from 'react-icons/io';
+
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
 import { asIcon } from 'utils/iconUtils';
+import QuickContractLogo from 'components/icons/QuickContractLogo';
+
 export default function HeaderLinks(props: { secondary: boolean }) {
 	const { secondary } = props;
-	const { colorMode, toggleColorMode } = useColorMode();
-	// Chakra Color Mode
 	const navbarIcon = useColorModeValue('gray.400', 'white');
 	let menuBg = useColorModeValue('white', 'navy.800');
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
@@ -108,10 +107,20 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 					</Flex>
 					<Flex flexDirection='column'>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} px='0' borderRadius='8px' mb='10px'>
-							                <ItemContent info='Quick Contract Dashboard' />
+							<Flex alignItems='center'>
+								<QuickContractLogo variant='compact' />
+								<Text ml='8px' fontSize='sm' fontWeight='500' color={textColor}>
+									Dashboard
+								</Text>
+							</Flex>
 						</MenuItem>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} px='0' borderRadius='8px' mb='10px'>
-							                <ItemContent info='Quick Contract System' />
+							<Flex alignItems='center'>
+								<QuickContractLogo variant='compact' />
+								<Text ml='8px' fontSize='sm' fontWeight='500' color={textColor}>
+									System
+								</Text>
+							</Flex>
 						</MenuItem>
 					</Flex>
 				</MenuList>
@@ -135,7 +144,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 					<Flex flexDirection='column'>
 						<Link w='100%' href='#'>
 							<Button w='100%' h='44px' mb='10px' variant='brand'>
-								Get Quick Contract Pro
+								Get <QuickContractLogo variant='compact' /> Pro
 							</Button>
 						</Link>
 						<Link w='100%' href='#'>
@@ -158,23 +167,6 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 				</MenuList>
 			</Menu>
 
-			<Button
-				variant='no-hover'
-				bg='transparent'
-				p='0px'
-				minW='unset'
-				minH='unset'
-				h='18px'
-				w='max-content'
-				onClick={toggleColorMode}>
-				<Icon
-					me='10px'
-					h='18px'
-					w='18px'
-					color={navbarIcon}
-					as={asIcon(colorMode === 'light' ? IoMdMoon : IoMdSunny)}
-				/>
-			</Button>
 			<Menu>
 				<MenuButton p='0px'>
 					<Avatar

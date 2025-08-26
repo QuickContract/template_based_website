@@ -1,6 +1,7 @@
 /*eslint-disable*/
 
 import { Flex, Link, List, ListItem, Text, useColorModeValue } from '@chakra-ui/react';
+import QuickContractLogo from 'components/icons/QuickContractLogo';
 
 export default function Footer() {
 	const textColor = useColorModeValue('gray.400', 'white');
@@ -25,14 +26,13 @@ export default function Footer() {
 					xl: 'start'
 				}}
 				mb={{ base: '20px', xl: '0px' }}>
-				{' '}
 				&copy; {new Date().getFullYear()}
-				<Text as='span' fontWeight='500' ms='4px'>
-					        Quick Contract. All Rights Reserved. Made with love by
+				<Flex as='span' alignItems='center' ms='4px' gap='4px'>
+					<QuickContractLogo variant='compact' />. All Rights Reserved. Made with love by
 					<Link mx='3px' color={textColor} href='#' target='_blank' fontWeight='700'>
-						Quick Contract!
+						<QuickContractLogo variant='compact' />!
 					</Link>
-				</Text>
+				</Flex>
 			</Text>
 			<List display='flex'>
 				<ListItem

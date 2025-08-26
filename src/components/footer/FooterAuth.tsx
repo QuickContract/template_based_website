@@ -1,40 +1,43 @@
 /* eslint-disable */
 
-import { Flex, Link, List, ListItem, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+  Flex,
+  Link,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import QuickContractLogo from 'components/icons/QuickContractLogo';
 
 export default function Footer() {
-	let textColor = useColorModeValue('gray.400', 'white');
-	return (
-		<Flex
-			zIndex='3'
-			flexDirection={{
-				base: 'column',
-				lg: 'row'
-			}}
-			alignItems={{
-				base: 'center',
-				xl: 'start'
-			}}
-			justifyContent='space-between'
-			px={{ base: '30px', md: '0px' }}
-			pb='30px'>
-			<Text
-				color={textColor}
-				textAlign={{
-					base: 'center',
-					xl: 'start'
-				}}
-				mb={{ base: '20px', lg: '0px' }}>
-				{' '}
-				&copy; {new Date().getFullYear()}
-				<Text as='span' fontWeight='500' ms='4px'>
-					        Quick Contract. All Rights Reserved. Made with love by
-					<Link mx='3px' color="blue" href='https://sitehec.com' target='_blank' fontWeight='700'>
-						Sitehec Technologies
-					</Link>
-				</Text>
-			</Text>
-			
-		</Flex>
-	);
+  let textColor = useColorModeValue('gray.400', 'white');
+  return (
+    <Flex
+      zIndex="3"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      w="100%"
+      textAlign="center"
+      py="20px"
+    >
+      <Text
+        color={textColor}
+        textAlign="center"
+        fontSize="sm"
+      >
+        <Flex as="span" alignItems="center" justifyContent="center" gap="4px" flexWrap="wrap">
+          &copy; {new Date().getFullYear()} <QuickContractLogo variant='compact' />. All Rights Reserved. Made with love by
+          <Link
+            mx="3px"
+            color="blue"
+            href="https://sitehec.com"
+            target="_blank"
+            fontWeight="700"
+          >
+            Sitehec Technologies
+          </Link>
+        </Flex>
+      </Text>
+    </Flex>
+  );
 }
