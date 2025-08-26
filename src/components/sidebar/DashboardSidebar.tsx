@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Icon, Text, useColorModeValue, Avatar, VStack, HStack, Divider } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useColorModeValue, Avatar, VStack, HStack, Divider, useDisclosure, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import QuickContractLogo from '../icons/QuickContractLogo';
@@ -15,6 +15,7 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user } = useAuth();
+  const { isOpen: isLogoutOpen, onOpen: onLogoutOpen, onClose: onLogoutClose } = useDisclosure();
   
   // Chakra color mode
   const sidebarBg = useColorModeValue('white', 'navy.800');
@@ -29,6 +30,10 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
   const redHoverBorder = useColorModeValue('red.200', 'red.700');
   const gray500 = useColorModeValue('gray.500', 'gray.400');
   const gray400 = useColorModeValue('gray.400', 'gray.500');
+  const gray200 = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const gray300 = useColorModeValue('gray.300', 'whiteAlpha.300');
+  const gray100 = useColorModeValue('gray.100', 'whiteAlpha.100');
+  const whiteAlpha100 = useColorModeValue('whiteAlpha.100', 'whiteAlpha.100');
 
   const menuItems = [
     {
@@ -50,6 +55,10 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
     navigate('/auth/sign-in', { replace: true });
   };
 
+  const handleLogoutClick = () => {
+    onLogoutOpen();
+  };
+
   return (
     <Box
       display={{ base: isOpen ? 'block' : 'none', lg: 'block' }}
@@ -62,22 +71,33 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
       boxShadow={shadow}
       zIndex="1000"
       overflowY="auto"
-      borderRight="1px solid"
+      borderRight="2px solid"
       borderColor={borderColor}
+      _before={{
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: '1px',
+        height: '100%',
+        bg: gray100
+      }}
     >
       <Flex direction="column" h="100%">
         {/* Logo Section */}
-        <Box p="32px 20px" textAlign="center" borderBottom="1px solid" borderColor={borderColor}>
-          <QuickContractLogo h="60px" w="200px" variant="large" />
+        <Box p="10px 20px" textAlign="center" borderBottom="2px solid" borderColor={borderColor} bg={gray100}>
+          <QuickContractLogo h="60px" w="200px" variant="default" />
         </Box>
 
         {/* User Profile Section */}
-        <Box p="20px" borderBottom="1px solid" borderColor={borderColor}>
+        {/* <Box p="20px" borderBottom="2px solid" borderColor={borderColor} bg={gray100}>
           <HStack spacing="3" align="center">
             <Avatar
               size="sm"
               bg="brand.500"
               icon={<Icon as={asIcon(MdPerson)} color="white" />}
+              ring="2px"
+              ringColor={gray200}
             />
             <VStack align="start" spacing="1" flex="1">
               <Text fontSize="sm" fontWeight="600" color={textColor}>
@@ -88,13 +108,22 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
               </Text>
             </VStack>
           </HStack>
-        </Box>
+        </Box> */}
 
         {/* Navigation Items */}
         <Flex direction="column" flex="1" px="20px" py="20px">
-          <Text fontSize="xs" fontWeight="600" color={gray500} mb="16px" textTransform="uppercase" letterSpacing="0.5px">
-            Navigation
-          </Text>
+          <Box 
+            mb="16px" 
+            p="12px 16px" 
+            borderRadius="12px" 
+            bg={gray100}
+            border="1px solid"
+            borderColor={gray200}
+          >
+            <Text fontSize="xs" fontWeight="600" color={gray500} textTransform="uppercase" letterSpacing="0.5px">
+              Navigation
+            </Text>
+          </Box>
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -107,13 +136,14 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
                 cursor="pointer"
                 bg={isActive ? activeBg : 'transparent'}
                 color={isActive ? activeColor : textColor}
-                border="1px solid"
-                borderColor={isActive ? activeColor : 'transparent'}
+                border="2px solid"
+                borderColor={isActive ? activeColor : gray200}
                 _hover={{
                   bg: isActive ? activeBg : hoverBg,
                   color: isActive ? activeColor : hoverTextColor,
                   transform: 'translateY(-2px)',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+                  borderColor: isActive ? activeColor : gray300,
                   _before: {
                     transform: 'scaleX(1)'
                   }
@@ -174,7 +204,7 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
               transform: 'translateY(-2px)',
               boxShadow: '0 4px 12px rgba(239, 68, 68, 0.2)'
             }}
-            onClick={handleLogout}
+            onClick={handleLogoutClick}
             transition="all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
           >
             <Icon
@@ -184,11 +214,33 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
               me="12px"
             />
             <Text fontSize="sm" fontWeight="600">
-              Sign Out
+              Logout
             </Text>
           </Flex>
         </Box>
       </Flex>
+
+      {/* Logout Warning Dialog */}
+      <AlertDialog isOpen={isLogoutOpen} onClose={onLogoutClose} leastDestructiveRef={undefined}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Confirm Logout
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Are you sure you want to logout? You will be redirected to the login page.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={onLogoutClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleLogout} ml={3}>
+                Logout
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 }

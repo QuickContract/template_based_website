@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<boolean> => {
     // Fixed credentials
-    if (email === 'quickcontract@admin.com' && password === 'Admin@123') {
+    if (email === 'admin@admin.com' && password === 'Admin@123') {
       const userData = { email, role: 'admin' };
       setIsLoggedIn(true);
       setUser(userData);

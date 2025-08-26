@@ -35,7 +35,7 @@ export default function SignatureField({
   required = false,
   signatureType = 'both' 
 }: SignatureFieldProps) {
-  const [activeTab, setActiveTab] = useState<'upload' | 'digital'>('upload');
+  const [activeTab, setActiveTab] = useState<'upload' | 'digital'>('digital');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
   
@@ -76,6 +76,7 @@ export default function SignatureField({
 
   const renderUploadTab = () => (
     <VStack spacing="15px" align="stretch">
+      {/* Upload functionality commented out for now
       <Input
         type="file"
         accept="image/*"
@@ -136,6 +137,10 @@ export default function SignatureField({
           </HStack>
         </Box>
       )}
+      */}
+      <Text color="gray.500" fontSize="sm" textAlign="center">
+        Upload functionality temporarily disabled
+      </Text>
     </VStack>
   );
 

@@ -136,7 +136,14 @@ export default function CreateContract() {
       case 'number':
         return <Input type="number" {...commonProps} />;
       case 'date':
-        return <Input type="date" {...commonProps} />;
+        return (
+          <Input 
+            type="date" 
+            {...commonProps} 
+            onClick={(e) => (e.target as HTMLInputElement).showPicker()}
+            cursor="pointer"
+          />
+        );
       case 'select':
         return (
           <Select {...commonProps}>
@@ -338,10 +345,10 @@ export default function CreateContract() {
                 <AccordionPanel pb="20px" pt="20px">
                   <VStack spacing="20px" align="stretch">
                     {group.fields.map((field) => (
-                      <FormControl key={field.key} isRequired={field.required}>
+                      <FormControl key={field.key} isRequired={field.type !== 'signature' ? field.required : false}>
                         {field.type !== 'signature' && (
                           <FormLabel color={textColor} fontSize="sm" fontWeight="500">
-                            {field.label} {field.required && <Text as="span" color="red.500">*</Text>}
+                            {field.label}
                           </FormLabel>
                         )}
                         {renderField(field)}
@@ -374,6 +381,7 @@ export default function CreateContract() {
                 variant="outline"
                 onClick={handlePreview}
                 colorScheme="blue"
+                isDisabled={true}
               >
                 Preview Contract
               </Button>

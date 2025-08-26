@@ -23,7 +23,8 @@ import {
   useDisclosure,
   Badge,
   Icon,
-  Spinner
+  Spinner,
+  Input
 } from '@chakra-ui/react';
 import { asIcon } from '../../utils/iconUtils';
 import { MdEdit, MdDelete, MdDownload, MdVisibility } from 'react-icons/md';
@@ -42,6 +43,8 @@ interface Contract {
 
 export default function AllContracts() {
   const [contracts, setContracts] = useState<Contract[]>([]);
+  const [filteredContracts, setFilteredContracts] = useState<Contract[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [contractToDelete, setContractToDelete] = useState<Contract | null>(null);
   const [downloadingPDF, setDownloadingPDF] = useState<string | null>(null);
   const [downloadingDOCX, setDownloadingDOCX] = useState<string | null>(null);
@@ -62,6 +65,40 @@ export default function AllContracts() {
   const loadContracts = () => {
     const storedContracts = JSON.parse(localStorage.getItem('quickContractContracts') || '[]');
     setContracts(storedContracts);
+    setFilteredContracts(storedContracts);
+  };
+
+  // Search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    
+    if (!query.trim()) {
+      setFilteredContracts(contracts);
+      return;
+    }
+
+    const filtered = contracts.filter(contract => {
+      const searchTerm = query.toLowerCase();
+      
+      // Search in contract data fields
+      const dataMatch = Object.values(contract.data).some(value => 
+        value && value.toString().toLowerCase().includes(searchTerm)
+      );
+      
+      // Search in category and subcategory
+      const categoryMatch = contract.category.toLowerCase().includes(searchTerm) ||
+                           contract.subcategory.toLowerCase().includes(searchTerm);
+      
+      // Search in specific fields
+      const contractorMatch = contract.data.contractorName?.toLowerCase().includes(searchTerm);
+      const ownerMatch = contract.data.ownerName?.toLowerCase().includes(searchTerm);
+      const addressMatch = contract.data.projectAddress?.toLowerCase().includes(searchTerm);
+      const dateMatch = contract.data.contractDate?.toLowerCase().includes(searchTerm);
+      
+      return dataMatch || categoryMatch || contractorMatch || ownerMatch || addressMatch || dateMatch;
+    });
+    
+    setFilteredContracts(filtered);
   };
 
   const handleEdit = (contract: Contract) => {
@@ -227,20 +264,49 @@ export default function AllContracts() {
 
       {/* Contracts Table */}
       <Box bg={cardBg} p="30px" borderRadius="20px" border="1px solid" borderColor={borderColor}>
-        {contracts.length === 0 ? (
+        {/* Search Bar */}
+        <Box mb="20px">
+          <HStack spacing="15px" align="center" justify="space-between">
+            <Box flex="1" maxW="400px">
+              <Input
+                placeholder="Search contracts by name, address, date, or any field..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                size="lg"
+                bg="white"
+                border="2px solid"
+                borderColor={borderColor}
+                _focus={{
+                  borderColor: 'blue.400',
+                  boxShadow: '0 0 0 1px blue.400'
+                }}
+                _hover={{
+                  borderColor: 'gray.300'
+                }}
+              />
+            </Box>
+            <Text fontSize="sm" color="gray.500">
+              {filteredContracts.length} of {contracts.length} contracts
+            </Text>
+          </HStack>
+        </Box>
+
+        {filteredContracts.length === 0 ? (
           <VStack spacing="20px" py="60px">
             <Text fontSize="lg" color="gray.500">
-              No contracts found
+              {searchQuery ? 'No contracts found matching your search' : 'No contracts found'}
             </Text>
             <Text color="gray.400" textAlign="center">
-              Create your first contract to get started
+              {searchQuery ? 'Try adjusting your search terms' : 'Create your first contract to get started'}
             </Text>
-            <Button 
-              colorScheme="blue" 
-              onClick={() => navigate('/dashboard/create-contract')}
-            >
-              Create Contract
-            </Button>
+            {!searchQuery && (
+              <Button 
+                colorScheme="blue" 
+                onClick={() => navigate('/dashboard/create-contract')}
+              >
+                Create Contract
+              </Button>
+            )}
           </VStack>
         ) : (
           <Box overflowX="auto">
@@ -256,7 +322,7 @@ export default function AllContracts() {
                 </Tr>
               </Thead>
               <Tbody>
-                {contracts.map((contract) => (
+                {filteredContracts.map((contract) => (
                   <Tr key={contract.id}>
                     <Td color={textColor}>
                       {contract.data.contractorName || 'N/A'}
@@ -285,6 +351,7 @@ export default function AllContracts() {
                     </Td>
                     <Td>
                       <HStack spacing="8px">
+                        {/* Eye button commented out for now
                         <IconButton
                           aria-label="View contract"
                           icon={<Icon as={asIcon(MdVisibility)} />}
@@ -293,6 +360,7 @@ export default function AllContracts() {
                           colorScheme="blue"
                           onClick={() => handleEdit(contract)}
                         />
+                        */}
                         <IconButton
                           aria-label="Edit contract"
                           icon={<Icon as={asIcon(MdEdit)} />}
@@ -311,6 +379,7 @@ export default function AllContracts() {
                           isLoading={downloadingPDF === contract.id}
                           isDisabled={downloadingPDF === contract.id || downloadingDOCX === contract.id}
                         />
+                        {/* Word file download button commented out for now
                         <IconButton
                           aria-label="Download DOCX"
                           icon={downloadingDOCX === contract.id ? <Spinner size="sm" /> : <Icon as={asIcon(MdDownload)} />}
@@ -321,6 +390,7 @@ export default function AllContracts() {
                           isLoading={downloadingDOCX === contract.id}
                           isDisabled={downloadingPDF === contract.id || downloadingDOCX === contract.id}
                         />
+                        */}
                         <IconButton
                           aria-label="Delete contract"
                           icon={<Icon as={asIcon(MdDelete)} />}
